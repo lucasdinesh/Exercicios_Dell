@@ -22,13 +22,14 @@ class MyFields extends StatefulWidget {
 }
 
 class _MyFieldsState extends State<MyFields> {
-  late TextEditingController _controller, _controller2;
+  int? somador_1 = 0;
+  int? somador_2 = 0;
+  var total = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-    _controller2 = TextEditingController();
+  void _totalState() {
+    setState(() {
+      total = somador_1! + somador_2!;
+    });
   }
 
   @override
@@ -38,35 +39,58 @@ class _MyFieldsState extends State<MyFields> {
         title: Text('Somador'),
       ),
       body: Center(
-        child: Column(
-          children: [
-            Card(
-              child: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Numero 1',
-                ),
-              ),
-            ),
-            Card(
-              child: TextField(
-                controller: _controller2,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Numero 2',
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {
-
+        child: Column(children: [
+          Card(
+            child: TextField(
+              onChanged: (value) {
+                setState(()=> {
+                somador_1=int.tryParse(value)
+                }
+                );
               },
-              child: Text("Press"),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Numero 1',
+              ),
             ),
-            Text('Somador  ')
-          ],
-        ),
+          ),
+          Card(
+            child: TextField(
+              onChanged: (value) {
+                setState(()=> {
+
+                    somador_2 = int.tryParse(value)
+
+                }
+                );
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Numero 2',
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed:
+                ((somador_1 != null) && (somador_2 != null)) ? _totalState : null,
+            child: Text("Press"),
+          ),
+          Card(
+            child: Column(
+              children: [
+                Text(
+                  'SOMADOR',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+                Center(
+                    child: Text(
+                  '${total}',
+                  style: TextStyle(fontSize: 22),
+                )),
+              ],
+            ),
+          ),
+        ]),
       ),
     );
   }
